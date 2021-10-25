@@ -1,0 +1,7 @@
+numpy
+matplotlib
+requests
+uuid
+pytz
+datetime
+configparser

@@ -23,9 +23,9 @@ For Purple Air monitor integration, you will need:
 
 - the sensor ID for a specific Purple Air Monitor
 
-For integrating the WattTime signal, you will need:
+For integrating the WattTime signal, you will need to:
 
-- to register a WattTime account.  You can use this using the WattTime functionality I have added
+- register a WattTime account.  You can do this using the WattTime functionality I have added
 
 ```from WattTimeAPI import WattTime
 # If you are in California, use the higher-resolution CA signals

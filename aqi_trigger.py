@@ -8,6 +8,7 @@ config.sections()
 
 # Depending on how you run the script, you may need to specify the config.ini path location
 config.read(os.path.join(os.path.dirname('__file__'), 'config.ini'))
+#config.read('/home/jeffkessler/TPLink/config.ini')
 
 
 # Load Relevant Settings
@@ -54,7 +55,7 @@ if outdoor.status == "Good" and indoor.aqi <= 5:
 
 # Triggers for Carbon Intensity
 import colormap
-from WattTimeAPI import WattTime
+from WattTimeAPI import California
 
 wt_user = config["WattTime"]["username"]
 wt_password = config["WattTime"]["password"]
@@ -64,7 +65,8 @@ address = config["WattTime"]["address"]
 bulb = c.findDevice("CI Indicator")
 
 
-wt = WattTime(wt_user, wt_password, address)
+wt = California(wt_user, wt_password, address)
+wt.setUtility("smud")
 
 emissions = wt.get_emissions()
 

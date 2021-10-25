@@ -25,8 +25,8 @@ def GenerateColor(rating, vmin, vmax):
     # colors in total
     
     cMap = []
-    for value, colour in zip([0,30,40,60,70,80,100],["DarkGreen", "LightGreen", "Yellow", "Orange", "IndianRed", "DarkRed", "Purple"]):
-        cMap.append((value/100.0, colour))
+    for value, colour in zip([0,51,101,151,200],["DarkGreen", "Yellow", "Orange", "DarkRed", "Purple"]):
+        cMap.append((value/200.0, colour))
 
     cm = mpl.colors.LinearSegmentedColormap.from_list("custom", cMap)
     
@@ -34,6 +34,8 @@ def GenerateColor(rating, vmin, vmax):
     
     norm = mpl.colors.Normalize(vmin, vmax)
     convert = mpl.colors.rgb_to_hsv
+    rating = max(rating, vmin)
+    rating = min(rating, vmax)
     color = cm(norm(rating))
     
     hue, saturation, color_temp = convert(color[0:3])

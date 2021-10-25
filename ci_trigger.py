@@ -5,6 +5,7 @@
 import colormap
 import kasaAPI as kapi
 from WattTimeAPI import WattTime
+from WattTimeAPI import California
 import configparser
 import os
 
@@ -16,12 +17,8 @@ config.read(os.path.join(os.path.dirname('__file__'), 'config.ini'))
 
 
 # Load Relevant Settings
-pa_indoor_id = config["PurpleAir"]["indoor_sensor"]
-pa_outdoor_id = config["PurpleAir"]["outdoor_sensor"]
 username = config["Kasa"]["username"]
-password = config["Kasa"]["password"]
-blue_purifier = config["Kasa"]["device_one"]
-carrier_purifier = config["Kasa"]["device_two"]     
+password = config["Kasa"]["password"] 
 
 wt_user = config["WattTime"]["username"]
 wt_password = config["WattTime"]["password"]
@@ -34,10 +31,12 @@ c = kapi.TPLink(username, password)
 bulb = c.findDevice("CI Indicator")
 
 
-wt = WattTime(wt_user, wt_password, address)
+wt = California(wt_user, wt_password, address)
+wt.setUtility("smud")
+
 
 emissions = wt.get_emissions()
 
 col = colormap.GenerateColor(emissions, 0, 100)
-bulb.ChangeColor(col["hue"],col["saturation"],col["brightness"], 1)
+bulb.ChangeColor(col["hue"],col["saturation"],5, 1)
         

@@ -161,7 +161,6 @@ class SmartBulb(KasaDevice):
         }
         
         self.modifyKasaDeviceState(deviceState, light_state)
-        self.Brightness(20, deviceState)    
         
     def Brightness(self, value, deviceState=1):
         """

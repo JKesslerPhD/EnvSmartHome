@@ -251,7 +251,7 @@ class Predictions():
         
     
     def norm(self, lbound = 0, ubound = 100):
-        if not self.min or not self.max:
+        if not isinstance(self.min,float) or not isinstance(self.max,float):
             raise Exception("Cannot normalize.  Emissions not loaded")
         self.scalar = (ubound - lbound)/(self.max-self.min)
         

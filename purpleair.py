@@ -1,7 +1,7 @@
 import requests
 
 class Monitor():
-    def __init__(self, monitor_id):
+    def __init__(self, monitor_id, api_key):
         """
         
 
@@ -21,6 +21,7 @@ class Monitor():
         self.pm25 = None
         self.aqi = None
         self.status = None
+        self.api_key = api_key
         
         self.update()
 
@@ -29,17 +30,20 @@ class Monitor():
         a = AQI(self.pm25)
         self.aqi = a.aqi
         self.status = a.status
-        return "{}(considered '{}')".format(self.aqi, self.status)
+        return "{} (considered '{}')".format(self.aqi, self.status)
         
     def getReading(self):
-        r = requests.get("https://www.purpleair.com/json?show={}".format(self.monitor_id))
-        data = r.json()["results"][0]
-        uptime = data["Uptime"]
+        my_headers = {'X-API-Key':self.api_key,
+                      'Content-Type': 'application/json'}
+        url = "https://api.purpleair.com/v1/sensors/{}".format(self.monitor_id)
+        r = requests.get(url, headers=my_headers)
+        data = r.json()["sensor"]
+        uptime = data["uptime"]
         if uptime == self.sensor_uptime:
             return None
         else:
             self.sensor_uptime == uptime
-        return float(data["PM2_5Value"])
+        return float(data["pm2.5"])
         
 
 class AQI():

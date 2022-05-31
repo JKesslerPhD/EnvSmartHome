@@ -151,7 +151,7 @@ class KasaDevice():
     
 class SmartBulb(KasaDevice):
     
-    def ChangeColor(self, hue, saturation, value, deviceState=1):
+    def ChangeColor(self, hue, saturation, value, deviceState=None):
         light_state = {
             "hue": hue,
             "saturation": saturation,
@@ -180,7 +180,7 @@ class SmartBulb(KasaDevice):
                 "brightness": value,
                 "transition_period":0
             }
-            
+    
         self.modifyKasaDeviceState(deviceState, light_state)
         
     def modifyKasaDeviceState(self, deviceState, params = {}):

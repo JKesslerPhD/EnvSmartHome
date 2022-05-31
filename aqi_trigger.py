@@ -16,10 +16,12 @@ config.read(os.path.join(os.path.dirname('__file__'), 'config.ini'))
 # Load Relevant Settings
 pa_indoor_id = config["PurpleAir"]["indoor_sensor"]
 pa_outdoor_id = config["PurpleAir"]["outdoor_sensor"]
+pa_key = config["PurpleAir"]["pa_key"]
 username = config["Kasa"]["username"]
 password = config["Kasa"]["password"]
 blue_purifier = config["Kasa"]["device_one"]
 carrier_purifier = config["Kasa"]["device_two"]
+
 
 
 # Connect to your Kasa Account
@@ -30,8 +32,8 @@ blue = c.findDevice(blue_purifier)
 carrier = c.findDevice(carrier_purifier)
 
 # Check a specific Purple Air sensor
-indoor = pa.Monitor(pa_indoor_id)
-outdoor = pa.Monitor(pa_outdoor_id)
+indoor = pa.Monitor(pa_indoor_id, pa_key)
+outdoor = pa.Monitor(pa_outdoor_id, pa_key)
 
 #print("Sensor's Air Quality is {} (considered '{}')".format(m.aqi, m.status))
 
@@ -58,8 +60,10 @@ if outdoor.status == "Good" and indoor.aqi <= 5:
 # Triggers for Carbon Intensity
 import colormap
 from WattTimeAPI import California
+from WattTimeAPI import WattTime
 
 wt_user = config["WattTime"]["username"]
+#wt_user = "kesslerj"  # For WattTimeAPI. jkessler for SGIP API
 wt_password = config["WattTime"]["password"]
 address = config["WattTime"]["address"]
 
@@ -68,11 +72,13 @@ address = config["WattTime"]["address"]
 # TP-Link Bulb named "CI Indicator"
 bulb = c.findDevice("CI Indicator")
 
-
 wt = California(wt_user, wt_password, address)
 wt.setUtility("smud")
 
 emissions = wt.get_emissions()
 
+
+# Should make some modifications toa llow bulb to remain off/on
 col = colormap.GenerateColor(emissions, 0, 100)
-bulb.ChangeColor(col["hue"],col["saturation"],col["brightness"], 1)
+bulb.ChangeColor(col["hue"],col["saturation"],col["brightness"])
+bulb.Brightness(10,1)
